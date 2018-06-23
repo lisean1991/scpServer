@@ -1,0 +1,49 @@
+<mvc:View
+   xmlns:core="sap.ui.core"
+   xmlns:mvc="sap.ui.core.mvc"
+   xmlns="sap.m"
+   xmlns:l="sap.ui.layout"
+   xmlns:html="http://www.w3.org/1999/xhtml"
+   controllerName="ygsd.controller.measurementCreate">
+   <Page title="Create Measurement Document">
+   <Panel width="auto">
+   <l:VerticalLayout
+		class="sapUiContentPadding"
+		width="100%">
+		<l:content>
+			<Label text="Measured Value" labelFor="measuredValue"/>
+			<Input
+				id="measuredValue"
+				maxLength="10"
+				type="Text"
+				value="{/value}"/>
+
+      <Label text="Description" labelFor="description"/>
+			<Input
+				id="description"
+				maxLength="40"
+				type="Text"
+				value="{/description}"/>
+      <Label text="Date" labelFor="DateTimePicker"/>
+      <DateTimePicker
+  			id="DateTimePicker"
+  			placeholder="Enter Date ..."
+        value="{path:'/measuredOn', type: 'sap.ui.model.type.DateTime'}"
+  			change="onDateChange"/>
+      <Input
+        visible="false"
+				type="Text"
+				value="{/id}"/>
+		</l:content>
+	</l:VerticalLayout>
+  <l:HorizontalLayout
+    class="sapUiContentPadding"
+		width="100%">
+    <l:content>
+      <Button text="Save" press="onSave"/>
+      <Button text="Cancel" press="navBack"/>
+    </l:content>
+  </l:HorizontalLayout>
+	</Panel>
+	</Page>
+</mvc:View>

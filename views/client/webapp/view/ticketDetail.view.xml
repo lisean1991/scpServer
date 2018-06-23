@@ -1,0 +1,151 @@
+<mvc:View xmlns:core="sap.ui.core"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns="sap.m"
+	xmlns:f="sap.f"
+	xmlns:layout="sap.ui.layout"
+	xmlns:form="sap.ui.layout.form"
+	controllerName="ygsd.controller.ticketDetail"
+	xmlns:html="http://www.w3.org/1999/xhtml">
+	<!-- <Page title="工单详细" enableScrolling="true">
+		<content>
+			<IconTabBar>
+				<items>
+					<IconTabFilter
+						text="Info">
+						<form:SimpleForm>
+							<Label text="工单号"></Label>
+							<Text text="{ID}" width="100%"></Text>
+							<Label text="工单标题"></Label>
+							<Text text="{Name}" width="100%"></Text>
+							<Label text="状态"></Label>
+							<Text text="{ServiceRequestUserLifeCycleStatusCodeText}" width="100%"></Text>
+							<Label text="来源"></Label>
+							<Text text="{DataOriginTypeCodeText}" width="100%"></Text>
+							<Label text="报告人"></Label>
+							<Text text="{BuyerPartyName}" width="100%"></Text>
+							<Label text="优先级"></Label>
+							<Text text="{ServicePriorityCodeText}" width="100%"></Text>
+							<Label text="回复"></Label>
+							<TextArea id='reply' enabled='false' width="100%"></TextArea>
+						</form:SimpleForm>
+					</IconTabFilter>
+					<IconTabFilter
+						text="Feeder">
+						<List id="feeder" headerText="Social Interactiont" showSeparators="Inner" >
+						</List>
+					</IconTabFilter>
+				</items>
+			</IconTabBar>
+	</content>
+	<footer>
+		<Toolbar>
+			<ToolbarSpacer/>
+			<Button id="rplb" text="回复" press="handleReplyPress"/>
+			<Button id="send" text="发送" visible='false' press="handleSendPress"/>
+			<Button id="cancel" text="取消" visible='false' press="handleCancelPress"/>
+			<ToolbarSpacer/>
+		</Toolbar>
+	</footer>
+	</Page> -->
+	<f:DynamicPage id="dynamicPageId" showFooter="true">
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+					<Title text="{Name}"/>
+				</f:heading>
+				<f:expandedContent>
+					<Label text="{ID}"/>
+				</f:expandedContent>
+				<f:snappedContent>
+					<Label text="{ID}"/>
+				</f:snappedContent>
+				<f:actions>
+					<Button
+							icon="sap-icon://decline"
+							type="Transparent"
+							press="handleCancelPress" />
+				</f:actions>
+			</f:DynamicPageTitle>
+		</f:title>
+	<!-- DynamicPage Header -->
+	<f:header>
+		<f:DynamicPageHeader pinnable="true">
+			<f:content>
+				<FlexBox
+						alignItems="Start"
+						justifyContent="SpaceBetween">
+					<items>
+						<Panel
+								backgroundDesign="Transparent"
+								class="sapUiNoContentPadding">
+							<content>
+								<layout:HorizontalLayout
+										allowWrapping="true">
+									<layout:VerticalLayout
+											class="sapUiMediumMarginEnd">
+										<ObjectAttribute title="Customer" text="{BuyerPartyName}"/>
+										<ObjectAttribute title="Product" text="{ProductDescription}"/>
+										<ObjectAttribute title="Priority" text="{ServicePriorityCodeText}"/>
+									</layout:VerticalLayout>
+									<layout:VerticalLayout>
+										<ObjectAttribute title="Status"/>
+										<ObjectStatus text="{ServiceRequestUserLifeCycleStatusCodeText}" state="Success" />
+									</layout:VerticalLayout>
+								</layout:HorizontalLayout>
+							</content>
+						</Panel>
+					</items>
+				</FlexBox>
+			</f:content>
+		</f:DynamicPageHeader>
+	</f:header>
+	<f:content>
+		<IconTabBar>
+			<items>
+				<IconTabFilter
+					text="Info">
+					<form:SimpleForm>
+						<Label text="Ticket NO."></Label>
+						<Text text="{ID}" width="100%"></Text>
+						<Label text="Title"></Label>
+						<Text text="{Name}" width="100%"></Text>
+						<Label text="Sales Org."></Label>
+						<Text text="{SalesOrganisationID}" width="100%"></Text>
+						<Label text="Serial Id"></Label>
+						<Text text="{SerialID}" width="100%"></Text>
+						<Label text="Reporter Id"></Label>
+						<Text text="{ReportedPartyID}" width="100%"></Text>
+						<Label text="Customer Id"></Label>
+						<Text text="{BuyerPartyID}" width="100%"></Text>
+						<Label text="Resource"></Label>
+						<Text text="{DataOriginTypeCodeText}" width="100%"></Text>
+						<Label text="Reporter"></Label>
+						<Text text="{BuyerPartyName}" width="100%"></Text>
+						<Label text="Priority"></Label>
+						<Text text="{ServicePriorityCodeText}" width="100%"></Text>
+					</form:SimpleForm>
+				</IconTabFilter>
+				<IconTabFilter
+					text="Feeder">
+					<List id="feeder" headerText="Social Interactiont" showSeparators="Inner" >
+					</List>
+				</IconTabFilter>
+			</items>
+		</IconTabBar>
+	</f:content>
+	<!-- DynamicPage Footer -->
+	<f:footer>
+		<Toolbar>
+			<FeedInput
+				post="handleSendPress"
+				placeholder="Please input reply here"
+				showIcon="true" />
+			<!-- <ToolbarSpacer/>
+			<Button id="rplb" text="回复" press="handleReplyPress"/>
+			<Button id="send" text="发送" visible='false' press="handleSendPress"/>
+			<Button id="cancel" text="取消" visible='false' press="handleCancelPress"/>
+			<ToolbarSpacer/> -->
+		</Toolbar>
+	</f:footer>
+</f:DynamicPage>
+</mvc:View>

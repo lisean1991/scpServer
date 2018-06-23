@@ -1,0 +1,52 @@
+<mvc:View
+   xmlns:core="sap.ui.core"
+   xmlns:mvc="sap.ui.core.mvc"
+   xmlns:f="sap.ui.layout.form"
+   xmlns="sap.m"
+   xmlns:html="http://www.w3.org/1999/xhtml"
+   controllerName="ygsd.controller.productDetail">
+   <Page id="idPage" showNavButton="true" navButtonPress="onNavBack" title="Registered Product">
+     <content>
+       <ObjectHeader title="Basic Information" backgroundDesign="Solid">
+         <attributes>
+           <ObjectAttribute title="Serial ID" text="{/SerialID}" />
+           <ObjectAttribute title="ID" text="{/ID}" />
+           <ObjectAttribute title="Product ID" text="{/ProductID}" />
+         </attributes>
+       </ObjectHeader>
+       <IconTabBar expanded="{device>/isNoPhone}"
+		       class="sapUiSmallMarginBottom sapUiResponsiveContentPadding">
+		     <items>
+			     <IconTabFilter text="Details">
+				     <Table id="measurementPoint" width="auto" items="{/MeasurementPoint}" headerText="Measurement Logs" noDataText="no measurement maintained...">
+		          <columns>
+		           <Column>
+		             <Text text="ID" />
+		           </Column>
+		           <Column>
+		             <Text text="Name" />
+		           </Column>
+		           <Column>
+		             <Text text="Measure Attribute Name" />
+		           </Column>
+		           <Column>
+		             <Text text="Unit of Measure" />
+		           </Column>
+		          </columns>
+		          <items>
+		           <ColumnListItem type="Navigation" press="onItemPress">
+		             <cells>
+		               <Text text="{ID}" />
+		               <Text text="{Description}" />
+		               <Text text="{Name}" />
+		               <Text text="{MeasureUnitCode}" />
+		             </cells>
+		           </ColumnListItem>
+		          </items>
+		        </Table>
+			    </IconTabFilter>
+        </items>
+      </IconTabBar>
+    </content>
+   </Page>
+</mvc:View>

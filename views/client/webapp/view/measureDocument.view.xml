@@ -1,0 +1,46 @@
+<mvc:View
+   xmlns:core="sap.ui.core"
+   xmlns:mvc="sap.ui.core.mvc"
+   xmlns="sap.m"
+   xmlns:html="http://www.w3.org/1999/xhtml"
+   controllerName="ygsd.controller.measureDocument">
+   <Page class="sapUiContentPadding" showNavButton="true" navButtonPress="onNavBack" title="Registered Product">
+     <Panel>
+       <Table id="measurementDocument" width="auto" items="{/}" noDataText="no reading maintained...">
+       	<headerToolbar>
+			<OverflowToolbar id="otbSubheader">
+				<Title text="Readings" level="H2" />
+				<ToolbarSpacer />
+				<Button id="newButton" text="New" type="Transparent"
+					press="onNew" />
+			</OverflowToolbar>
+		</headerToolbar>
+         <columns>
+           <Column>
+             <Text text="ID" />
+           </Column>
+           <Column>
+             <Text text="Description" />
+           </Column>
+           <Column>
+             <Text text="Measured Value" />
+           </Column>
+           <Column>
+             <Text text="Measured On" />
+           </Column>
+         </columns>
+         <items>
+           <ColumnListItem>
+             <cells>
+               <Text text="{ID}" />
+               <Text text="{Description}" />
+               <Text text="{= parseFloat(${MeasuredValue}) }" />
+               <Text text="{ path:'formatedDateTime', type: 'sap.ui.model.type.DateTime', formatOptions: {
+					            style: 'short'}}" />
+             </cells>
+           </ColumnListItem>
+         </items>
+       </Table>
+     </Panel>
+   </Page>
+</mvc:View>

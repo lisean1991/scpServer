@@ -1,0 +1,19 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:form="sap.ui.layout.form" controllerName="ygsd.controller.ticketList"
+	xmlns:html="http://www.w3.org/1999/xhtml">
+	<Page title="Tick List" enableScrolling="false" showNavButton='true' navButtonPress="onNavBack">
+    <List
+  		id="list"
+  		enableBusyIndicator="true"
+  		headerText="Tick List"
+  		growing="true" itemPress="handlePress"
+      showUnread='true'
+      includeItemInSelection="true"
+  		items="{path: '/'}" >
+  		<StandardListItem
+				press="handlePress"
+  			title="{Name}"
+        type="Navigation"
+  			description="{ID}" />
+  	</List>
+	</Page>
+</mvc:View>

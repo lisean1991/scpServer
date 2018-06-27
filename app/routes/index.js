@@ -44,28 +44,92 @@ module.exports = function (app) {
     superagent.get(destination.URL+requestPath)
     .set('Authorization','Basic ' + new Buffer(destination.User+":"+destination.Password).toString('base64'))
     .set("x-csrf-token","fetch")
-    .pipe(res);
+    .query({"$format":"json"})
+    .end(function(err,response){
+      destination.x_csrf_token = response.headers['x-csrf-token'];
+      destination.cookie = response.headers.cookie;
+      console.log(response.headers.cookie);
+      res.send(response.body);
+    });
   });
 
   app.route('/api/v1/*').post(function(req, res) {
     var sHost = req.hostname === "localhost" ?req.hostname: req.hostname.split(".")[0];
     var requestPath = URL.parse(req.url).href.split("/api/v1/")[1];
     var destination = DESTINATION_MAP.getProperty(sHost);
-    // var destination = DESTINATION_MAP.getProperty(req.hostname.split(".")[0]);
-    superagent.post(destination.URL+requestPath)
-    .set('x-csrf-token',destination.x_csrf_token)
-    .send(req.body)
-    .pipe(res);
+    var getTokenOptions = {
+      url: destination.URL+"$metadata",
+      method: "GET",
+      json:true,
+      headers: {
+          "content-type": "application/json",
+          'Authorization': 'Basic ' + new Buffer(destination.User+":"+destination.Password).toString('base64'),
+          "x-csrf-token" :"fetch"
+      }
+    };
+    var requestC = request.defaults({jar: true});
+    requestC(getTokenOptions,function(error,response,body){
+      var csrfToken = response.headers['x-csrf-token'];
+      if(!csrfToken){
+        reject({message:"Token error!"});
+        return;
+        }
+      var updateOptions = {
+        url: destination.URL+requestPath,
+        method: "POST",
+        json:true,
+        headers: {
+            "content-type": "application/json",
+            'x-csrf-token': csrfToken
+        },
+        body:req.body
+      };
+      requestC(updateOptions).pipe(res);
+    });
+
   });
 
   app.route('/api/v1/*').patch(function(req, res) {
     var sHost = req.hostname === "localhost" ?req.hostname: req.hostname.split(".")[0];
-    var requestPath = URL.parse(req.url).split("/api/v1/")[1];
+    var requestPath = URL.parse(req.url).href.split("/api/v1/")[1];
     var destination = DESTINATION_MAP.getProperty(sHost);
-    superagent.patch(destination.URL+requestPath)
-    .set('x-csrf-token',destination.x_csrf_token)
-    .send(req.body)
-    .pipe(res);
+    var getTokenOptions = {
+      url: destination.URL+"$metadata",
+      method: "GET",
+      json:true,
+      headers: {
+          "content-type": "application/json",
+          'Authorization': 'Basic ' + new Buffer(destination.User+":"+destination.Password).toString('base64'),
+          "x-csrf-token" :"fetch"
+      }
+    };
+    var requestC = request.defaults({jar: true});
+    requestC(getTokenOptions,function(error,response,body){
+      var csrfToken = response.headers['x-csrf-token'];
+      if(!csrfToken){
+        reject({message:"Token error!"});
+        return;
+        }
+      var updateOptions = {
+        url: destination.URL+requestPath,
+        method: "PATCH",
+        json:true,
+        headers: {
+            "content-type": "application/json",
+            'x-csrf-token': csrfToken
+        },
+        body:req.body
+      };
+      requestC(updateOptions).pipe(res);
+    });
+    // var sHost = req.hostname === "localhost" ?req.hostname: req.hostname.split(".")[0];
+    // var requestPath = URL.parse(req.url).split("/api/v1/")[1];
+    // var destination = DESTINATION_MAP.getProperty(sHost);
+    // superagent.patch(destination.URL+requestPath)
+    // .set('x-csrf-token',destination.x_csrf_token)
+    // .send(req.body)
+    // .query({"$format":"json"})
+    // .pipe(res);
   });
 
   app.route('/api/v2/checkConnection').get(function(req, res) {

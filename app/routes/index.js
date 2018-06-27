@@ -16,41 +16,18 @@ var DESTINATION_MAP = require(process.cwd() + '/app/desination_map.js');
 
 module.exports = function (app) {
   var that = this;
-
-  //this.DESTINATION_MA = {};
-   // this.DESTINATION_MA={
-   //  "localhost": {
-   //       "Name": "c4c",
-   //       "Type": "HTTP",
-   //       "URL": "https://my306768.vlab.sapbydesign.com/sap/c4c/odata/v1/c4codata",
-   //       "Authentication": "BasicAuthentication",
-   //       "ProxyType": "Internet",
-   //       "Description": "c4c retrive data",
-   //       "User": "crmops",
-   //       "Password": "Ondemand1"
-   //   }
-   // };
-  console.log("begain");
   var handleC4CRequest = new oHandleC4CRequest();
   var handleDestination = new oDestination();
 
   app.route('/api/v1/*').get(function(req, res) {
     var sHost = req.hostname === "localhost" ?req.hostname: req.hostname.split(".")[0];
-    console.log(URL.parse(req.url));
-    console.log(DESTINATION_MAP.getAll());
-    console.log(DESTINATION_MAP.getProperty(req.hostname));
     var requestPath = URL.parse(req.url).href.split("/api/v1/")[1];
     var destination = DESTINATION_MAP.getProperty(sHost);
     superagent.get(destination.URL+requestPath)
     .set('Authorization','Basic ' + new Buffer(destination.User+":"+destination.Password).toString('base64'))
     .set("x-csrf-token","fetch")
     .query({"$format":"json"})
-    .end(function(err,response){
-      destination.x_csrf_token = response.headers['x-csrf-token'];
-      destination.cookie = response.headers.cookie;
-      console.log(response.headers.cookie);
-      res.send(response.body);
-    });
+    .pipe(res);
   });
 
   app.route('/api/v1/*').post(function(req, res) {
@@ -91,6 +68,7 @@ module.exports = function (app) {
 
   app.route('/api/v1/*').patch(function(req, res) {
     var sHost = req.hostname === "localhost" ?req.hostname: req.hostname.split(".")[0];
+    console.log(URL.parse(req.url));
     var requestPath = URL.parse(req.url).href.split("/api/v1/")[1];
     var destination = DESTINATION_MAP.getProperty(sHost);
     var getTokenOptions = {
@@ -139,20 +117,20 @@ module.exports = function (app) {
         for(var i = 0 ;i < des.length; i++){
           DESTINATION_MAP.setDest(des[i].Name,des[i]);
         }
-        var dest = DESTINATION_MAP.getProperty(sHost);
-        var options = {
-          url: dest.URL+"$metadata",
-          method: "GET",
-          json:true,
-          headers: {
-              "content-type": "application/json",
-              'Authorization': 'Basic ' + new Buffer(dest.User+":"+dest.Password).toString('base64'),
-              "x-csrf-token" :"fetch"
-          }
-        };
-        requestC(getTokenOptions,function(error,response,body){
-          dest.x_csrf_token = response.headers['x-csrf-token'];
-        });
+        // var dest = DESTINATION_MAP.getProperty(sHost);
+        // var options = {
+        //   url: dest.URL+"$metadata",
+        //   method: "GET",
+        //   json:true,
+        //   headers: {
+        //       "content-type": "application/json",
+        //       'Authorization': 'Basic ' + new Buffer(dest.User+":"+dest.Password).toString('base64'),
+        //       "x-csrf-token" :"fetch"
+        //   }
+        // };
+        // requestC(getTokenOptions,function(error,response,body){
+        //   dest.x_csrf_token = response.headers['x-csrf-token'];
+        // });
         res.send({"result":"success"});
       }).catch(function(){
         res.status(500);

@@ -4,4 +4,4 @@ applications:
   memory: 192M
   instances: 1
   random-route: false
-  host: NewC4C
+  host: my306768

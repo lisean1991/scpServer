@@ -5,7 +5,7 @@ function mapDestination(host){
   this.getDestinationInfo = function(){
     var target = null;
     if ( process.env.VCAP_SERVICES) {
-      var service_info = aa ;//JSON.parse( process.env.VCAP_SERVICES);
+      var service_info = JSON.parse( process.env.VCAP_SERVICES);
       if(service_info.destination){
         for(var i =0;i < service_info.destination.length;i++){
           if(service_info.destination[i].name = 'c4codata'){
